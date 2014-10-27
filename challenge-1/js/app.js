@@ -15,6 +15,7 @@
 
 // This function is the equivalent of document ready
 $(function() {
+    var timer;
 	/* Hints:
 	 		-- Start by registering the click event for the button.
 	 		-- You will need to keep track of the number of second somewhere.
@@ -22,20 +23,50 @@ $(function() {
 	 		-- Input values are strings, remember to parse it!
 			-- Regex for checking digit input is '^\\d+$'
 			-- Look up how setInterval() works, you will need it.
-	*/		
-});
+	*/
 
-function countDown() {
+    $('#countdownButton').click(function() {
+        window.clearInterval(timer);
+        var time = parseInt($('#time').val());
+        var size = parseInt($('#size').val());
+        var numRegEx = new RegExp('^\\d+$');
+        if (!numRegEx.test(time) || !numRegEx.test(size)) {
+            alert('Please enter a number!');
+        }
+        console.log(time);
+        console.log(size);
+        timer = window.setInterval(function() {
+            $('#displayedTimer').text(time+'s');
+            time--;
+            if (time < 0) {
+                $('#displayedTimer').text('Hooray!!!');
+                createConfetti(size);
+            }
+        }, 1000);
+
+    }); // on click
+
+}); //on ready
+
+function countDown(timer) {
 	// Hint: if time < 0, stop the countdown, otherwise refresh the timer display & call createConfetti().
 	// Hint: to stop countdown, look up clearInterval() function.
 }
 
-function createConfetti() {
+function createConfetti(size) {
 	// Get confetti's size. If user doesn't specify or type in invalid value, switch to a default size.
 
 
 	//	Random color RGB, use Math.floor(Math.random() * 255)
-
+    for ( var idx = 0; idx < size; idx++) {
+        var confetti = $(document.createElement('div'));
+        confetti.attr({
+            color: Math.floor(Math.random() * 255),
+            position: 'absolute';
+        });
+        var height = Math.floor(Math.random(window.innerHeight));
+        var width = Math.floor(Math.random(window.innerWidth));
+    }
 
 	// Random locations on screen
 	// Hint: use Math.floor, Math.random, window.innerHeight/Width to compute px value.
